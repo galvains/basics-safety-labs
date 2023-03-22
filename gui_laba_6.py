@@ -42,7 +42,9 @@ def confirm():
                         window.destroy()
 
         except FileNotFoundError:
-            print('[ERROR] json-file not found')
+            # print('[ERROR] json-file not found')
+            showinfo(message='Json-file not found...')
+            window.destroy()
 
 
     try:
