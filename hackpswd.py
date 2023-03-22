@@ -1,30 +1,29 @@
 import json
+from time import time
+
 from tkinter import *
 from tkinter.messagebox import showinfo
 
 def brute_force():
     try:
-        result['text'] = ''
-        with open('pswrds.txt') as file:
-            data = file.read().split()
+        start_time = time()
+        for i in range(1000000000):
+            trial = str(i)
 
-            for line in data:
-                if ent_pass.get() == line:
-                    result['text'] = line
-                    break
-            else:
-                raise KeyError
+            if trial == ent_pass.get():
+                result['text'] = trial
+                lbl_time['text'] = f'({round((time() - start_time), 1)} sec.)'
+                break
+        else:
+            raise KeyError
     except KeyError:
-        showinfo(message='Sorry, my dictionary is too stupid for that password 😕')
-        # window.destroy()
+        showinfo(message='Pass is very big.')
 
 def dict_hack():
     try:
         with open('data.json') as file:
             data = json.load(file)
 
-            # if ent_pass.get() in data['users']['password']:
-            #     result['text'] = data['users']['password']
         for user in data['users']:
             if user['password'] == ent_pass.get():
                 result['text'] = user['password']
@@ -60,8 +59,11 @@ ent_pass.grid(row=0, column=1)
 lbl_res = Label(frame, text='Password: ')
 lbl_res.grid(row=2, column=0, sticky='e', pady=2)
 
-result = Label(frame,)
+result = Label(frame)
 result.grid(row=2, column=1, sticky='w', pady=2)
+
+lbl_time = Label(frame)
+lbl_time.grid(row=2, column=1, sticky='e', pady=2)
 
 btn_force = Button(frame_btn, text='brute force', command=brute_force)
 btn_dict = Button(frame_btn, text='dict', command=dict_hack)
